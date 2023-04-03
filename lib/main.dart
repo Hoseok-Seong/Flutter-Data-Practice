@@ -3,7 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 우리는 값을 저장할 "provider"를 만들겁니다(여기서 값은 "Hello world"를 의미합니다).
 // 프로바이더를 사용하는 것으로 값의 mock/override가 가능하게 됩니다.
-final helloWorldProvider = Provider((_) => 'Hello world');
+final byeWorldProvider = Provider<String>((ref) {
+  return "Bye World";
+});
+
+// provider 결합
+final helloWorldProvider = Provider<String>((ref) {
+  final String value = ref.read(byeWorldProvider);
+  return "Hello World "+value;
+});
 
 void main() {
   runApp(
@@ -20,7 +28,7 @@ void main() {
 class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final String value = ref.watch(helloWorldProvider);
+    final String value = ref.read(helloWorldProvider);
 
     return MaterialApp(
       home: Scaffold(
